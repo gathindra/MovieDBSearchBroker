@@ -16,7 +16,7 @@ You can get the code from  - https://github.com/gathindra/movie-search-web-app
 * Open the solution in VS 2017
 * Start the service
 
-## Method to
+## Method 2
 * Open a terminal
 * cd ..\MovieDBSearchBroker\Gathi.MovieDB.Broker
 * dotnet restore

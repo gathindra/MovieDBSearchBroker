@@ -56,7 +56,8 @@ namespace Gathi.MovieDB.Broker.Controllers
                 // Result is something like /adw6Lq9FiC9zjYEpOqfq03ituwp.jpg
                 // Actual resource path is https://image.tmdb.org/t/p/w185/adw6Lq9FiC9zjYEpOqfq03ituwp.jpg
                 results.SetAbsoluteFilmPosterUrlPath(this._config.MovieDBPosterUrlFormat);
-                return Ok(results);
+                moviesResponse.Results = results.ToArray();
+                return Ok(moviesResponse);
             }
             catch (Exception ex)
             {

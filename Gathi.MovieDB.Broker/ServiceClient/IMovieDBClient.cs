@@ -8,6 +8,6 @@ namespace Gathi.MovieDB.Broker.ServiceClient
 {
     public interface IMovieDBClient
     {
-        Task<MovieResponse> SearchMoviesAsync(string query);
+        Task<MovieResponse> SearchMoviesAsync(string query, int page);
     }
 }

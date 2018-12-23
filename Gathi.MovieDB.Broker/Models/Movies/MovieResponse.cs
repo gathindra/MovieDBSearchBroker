@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Gathi.MovieDB.Broker.Models.Movies
 {
@@ -14,6 +15,6 @@ namespace Gathi.MovieDB.Broker.Models.Movies
         public int TotalPages { get; set; }
 
         [JsonProperty("results")]
-        public Result[] Results { get; set; }
+        public List<Result> Results { get; set; }
     }
 }

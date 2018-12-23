@@ -20,7 +20,7 @@
     "Gathi.MovieDB.Broker": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/v1/movies?query=star wars",
+      "launchUrl": "api/v1/movies?query=star wars&page=1",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

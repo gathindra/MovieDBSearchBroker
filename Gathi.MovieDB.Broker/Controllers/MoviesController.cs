@@ -37,27 +37,46 @@ namespace Gathi.MovieDB.Broker.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Search(string query)
+        public async Task<ActionResult> Search(string query, int page)
         {
             try
             {
+                // If query is empty send empty response to the caller
+                if (String.IsNullOrWhiteSpace(query))
+                {
+                    return Ok(new MovieResponse
+                    {
+                        Page = 1,
+                        TotalPages = 0,
+                        TotalResults = 0,
+                        Results = new List<Result>()
+                    });
+                }
+
                 var search = WebUtility.UrlEncode(query);
-                _logger.LogDebug("Initiating MusicDB service call with search token {0}", query);
+                _logger.LogDebug("Initiating MusicDB service call with search token {0} and page {1}", 
+                                query,
+                                page);
                 var moviesResponse = await this._movieDBClient
-                                                .SearchMoviesAsync(search);
+                                                .SearchMoviesAsync(search, page);
+
+                // Step - 1
                 // Get the result list ordered alphabetically
                 // There are some movies doesn't contain the title that matches search but
                 // other attribites contains the search token. We need
                 // remove those too while ordering the list.
-                var results = moviesResponse.OrderByAcesnding(query);
-                _logger.LogDebug("Result list contains {0} movies", results.Count);
 
-                // We need to create proper resouce path for image
+                // Step - 2
+                // We need to create proper resouce path for the image
                 // Result is something like /adw6Lq9FiC9zjYEpOqfq03ituwp.jpg
                 // Actual resource path is https://image.tmdb.org/t/p/w185/adw6Lq9FiC9zjYEpOqfq03ituwp.jpg
-                results.SetAbsoluteFilmPosterUrlPath(this._config.MovieDBPosterUrlFormat);
-                moviesResponse.Results = results.ToArray();
-                return Ok(moviesResponse);
+                // results.SetAbsoluteFilmPosterUrlPath(this._config.MovieDBPosterUrlFormat);
+   
+                var sortedMovieResponse = new FluentDataHelper(moviesResponse)
+                                            .SortAlphabetically(query)
+                                            .SetUrlPath(this._config.MovieDBPosterUrlFormat)
+                                            .Build();
+                return Ok(sortedMovieResponse);
             }
             catch (Exception ex)
             {

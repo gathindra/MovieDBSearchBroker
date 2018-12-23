@@ -24,7 +24,7 @@ namespace Gathi.MovieDB.Broker.ServiceClient
             this._config = configOptions.Value;
         }
 
-        public async Task<MovieResponse> SearchMoviesAsync(string query)
+        public async Task<MovieResponse> SearchMoviesAsync(string query, int page)
         {
             // Get client created. New HttpClientFactory resolves the following issues.
             var client = this._httpClientFactory.CreateClient("MovieDBClient");
@@ -50,8 +50,9 @@ namespace Gathi.MovieDB.Broker.ServiceClient
 
             // Construct the query with search token
             var queryString = String.Format(this._config.MovieDBQueryFromat,
-                query,
-                this._config.MovieDBApiKey);
+                                            query,
+                                            page,
+                                            this._config.MovieDBApiKey);
 
             var response = await client.GetAsync(queryString);
 
